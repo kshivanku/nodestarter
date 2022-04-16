@@ -17,10 +17,25 @@
     <script>
         if ('geolocation' in navigator) {
             console.log('geolocation available')
-            navigator.geolocation.getCurrentPosition((position) => {
-                console.log(position);
-                document.getElementById('latitude').innerText = position.coords.latitude;
-                document.getElementById('longitude').innerText = position.coords.longitude;
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                document.getElementById('latitude').innerText = lat;
+                document.getElementById('longitude').innerText = lon;
+                const data = {
+                    lat,
+                    lon
+                }
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+                const response = await fetch('/api', options);
+                const server_data = await response.json();
+                console.log(server_data) 
             });
         } else {
             console.log('geolocation not available')
