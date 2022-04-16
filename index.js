@@ -11,10 +11,17 @@ database.loadDatabase();
 
 app.post('/api', (req, res) => {
     console.log(req.body)
-    database.insert({lat: req.body.lat, lon: req.body.lon, timestamp: Date.now()})
-    res.json({
-        status: 'success',
-        lat: req.body.lat,
-        lon: req.body.lon
+    const data = req.body;
+    data.timestamp = Date.now();
+    database.insert(data)
+    res.json(data)
+})
+
+app.get('/api', (req, res) => {
+    database.find({}, (err, data) => {
+        if(err){
+            response.end()
+        }
+        res.json(data)
     })
 })

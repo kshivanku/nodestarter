@@ -14,6 +14,7 @@
     <h1>Data selfie app</h1>
     <p>Latitude: <span id="latitude"></span>&deg;</p>
     <p>Latitude: <span id="longitude"></span>&deg;</p>
+    <input type="text" placeholder="Enter mood" id="mood_text">
     <button onclick="getLocation()">Submit</button>
     <script>
         function getLocation() {
@@ -22,11 +23,13 @@
                 navigator.geolocation.getCurrentPosition(async (position) => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
+                    const mood = document.getElementById('mood_text').value;
                     document.getElementById('latitude').innerText = lat;
                     document.getElementById('longitude').innerText = lon;
                     const data = {
                         lat,
-                        lon
+                        lon,
+                        mood
                     }
                     const options = {
                         method: 'POST',
