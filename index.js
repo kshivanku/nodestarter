@@ -1,15 +1,20 @@
 const { response } = require('express');
+const Datastore = require('nedb');
 const express = require('express');
 const app = express();
 app.listen(8080, ()=> console.log('listening at 8080'))
 app.use(express.static('public'))
 app.use(express.json({limit: '1mb'}))
 
+const database = new Datastore('database.db');
+database.loadDatabase();
+
 app.post('/api', (req, res) => {
     console.log(req.body)
+    database.insert({lat: req.body.lat, lon: req.body.lon, timestamp: Date.now()})
     res.json({
         status: 'success',
-        lat: req.body.lat, 
+        lat: req.body.lat,
         lon: req.body.lon
     })
 })

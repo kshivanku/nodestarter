@@ -14,31 +14,34 @@
     <h1>Data selfie app</h1>
     <p>Latitude: <span id="latitude"></span>&deg;</p>
     <p>Latitude: <span id="longitude"></span>&deg;</p>
+    <button onclick="getLocation()">Submit</button>
     <script>
-        if ('geolocation' in navigator) {
-            console.log('geolocation available')
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                document.getElementById('latitude').innerText = lat;
-                document.getElementById('longitude').innerText = lon;
-                const data = {
-                    lat,
-                    lon
-                }
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                }
-                const response = await fetch('/api', options);
-                const server_data = await response.json();
-                console.log(server_data) 
-            });
-        } else {
-            console.log('geolocation not available')
+        function getLocation() {
+            if ('geolocation' in navigator) {
+                console.log('geolocation available')
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    document.getElementById('latitude').innerText = lat;
+                    document.getElementById('longitude').innerText = lon;
+                    const data = {
+                        lat,
+                        lon
+                    }
+                    const options = {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    const response = await fetch('/api', options);
+                    const server_data = await response.json();
+                    console.log(server_data)
+                });
+            } else {
+                console.log('geolocation not available')
+            }
         }
     </script>
 </body>
